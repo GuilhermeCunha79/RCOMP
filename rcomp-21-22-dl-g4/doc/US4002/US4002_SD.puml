@@ -1,0 +1,40 @@
+@startuml
+skinparam handwritten true
+skinparam monochrome true
+skinparam packageStyle rect
+skinparam defaultFontName FG Virgil
+skinparam shadowing false
+        participant ":Project Manager" as sc
+        participant ":AgvAutoTaskAssignUI" as ui
+		participant ":AgvAutoTaskAssignController" as ctrl
+        participant ":ShowOrdersService" as sos
+        participant ":ShowAgvService" as sas
+		participant ":PersistenceContext" as pc
+		participant ":RepositoryFactory" as rf
+		participant ":AGV" as dish
+		participant ":AGVRepository" as repo1
+		participant ":OrderRepository" as repo2
+        participant ":RegisterOrderInPlaceOfClientController" as ctrl2
+
+
+
+		sc-> ui: asks to activate ir deactivate the AGV's task auto-assign
+		ui-> sc: asks if the user wants to activate or deactivate
+		sc-> ui: types the wanted option
+		ui->ui: doShow()
+		alt the user activated the functionality
+		loop 10 em 10 segundos
+		ui->ctrl:autoAssignTasks()
+		ctrl->sos: getOrders()
+		ctrl->sas: getAgvs()
+        ctrl->dish: giveTask()
+        ctrl -> ctrl2: changeStatus()
+        ctrl-> repo1: deleteOfIdentity()
+        ctrl-> repo1: save()
+		ctrl->pc:repositories()
+		pc->rf:get
+		rf->repo1:get
+		ctrl->repo1:save(newAgv)
+		end loop
+		end alt
+@enduml

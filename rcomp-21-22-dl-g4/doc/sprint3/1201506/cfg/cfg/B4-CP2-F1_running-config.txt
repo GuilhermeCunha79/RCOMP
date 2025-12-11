@@ -1,0 +1,55 @@
+!
+version 12.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+!
+!
+ip dhcp pool MYVOIP
+ network 172.18.85.112 255.255.255.240
+ default-router 172.18.85.115
+ option 150 ip 172.18.85.115
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport trunk allowed vlan 1-429,451-1001
+ switchport mode trunk
+!
+interface FastEthernet1/1
+ switchport mode trunk
+!
+interface FastEthernet2/1
+ switchport access vlan 447
+ switchport trunk allowed vlan 2-9,11-1005
+ switchport mode access
+!
+interface FastEthernet3/1
+ switchport mode access
+ switchport voice vlan 449
+!
+interface Vlan1
+ ip address 172.18.85.115 255.255.255.240
+ shutdown
+!
+!
+!
+!
+line con 0
+!
+line vty 0 4
+ login
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+

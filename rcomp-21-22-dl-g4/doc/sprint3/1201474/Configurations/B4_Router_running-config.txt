@@ -1,0 +1,238 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+ip dhcp excluded-address 172.18.85.113
+ip dhcp excluded-address 172.18.85.97
+ip dhcp excluded-address 172.18.84.225
+ip dhcp excluded-address 172.18.83.129
+ip dhcp excluded-address 172.18.82.129
+!
+ip dhcp pool VOIP
+ network 172.18.85.112 255.255.255.240
+ option 150 ip 172.18.85.113
+ dns-server 172.18.85.97
+ domain-name buiding-4.rcomp-21-21-dl-g4
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017A2HJ-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/0
+ no ip address
+!
+interface FastEthernet1/0.435
+ encapsulation dot1Q 435
+ ip address 172.18.80.132 255.255.255.128
+ ip access-group 105 in
+ ip nat inside
+!
+interface FastEthernet1/0.446
+ encapsulation dot1Q 446
+ ip address 172.18.84.225 255.255.255.224
+ ip access-group 100 in
+ ip nat inside
+!
+interface FastEthernet1/0.447
+ encapsulation dot1Q 447
+ ip address 172.18.83.129 255.255.255.192
+ ip access-group 101 in
+ ip nat inside
+!
+interface FastEthernet1/0.448
+ encapsulation dot1Q 448
+ ip address 172.18.82.129 255.255.255.128
+ ip access-group 102 in
+ ip nat inside
+!
+interface FastEthernet1/0.449
+ encapsulation dot1Q 449
+ ip address 172.18.85.113 255.255.255.240
+ ip access-group 103 in
+ ip nat inside
+!
+interface FastEthernet1/0.450
+ encapsulation dot1Q 450
+ ip address 172.18.85.97 255.255.255.240
+ ip access-group 106 in
+ ip nat inside
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 172.18.80.128 0.0.0.127 area 0
+ network 172.18.82.128 0.0.0.127 area 4
+ network 172.18.83.128 0.0.0.63 area 4
+ network 172.18.84.224 0.0.0.31 area 4
+ network 172.18.85.112 0.0.0.15 area 4
+!
+router rip
+!
+ip nat inside source static tcp 172.18.85.97 80 172.18.80.132 80 
+ip nat inside source static tcp 172.18.85.97 443 172.18.80.132 443 
+ip nat inside source static tcp 172.18.85.98 53 172.18.80.132 53 
+ip nat inside source static udp 172.18.85.98 53 172.18.80.132 53 
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 100 permit ip 172.18.84.224 0.0.0.31 any
+access-list 100 permit icmp any any echo
+access-list 100 permit icmp any any echo-reply
+access-list 100 permit ip any host 255.255.255.255
+access-list 100 permit udp any host 172.18.84.225 eq tftp
+access-list 100 permit tcp any host 172.18.84.225 eq 2000
+access-list 100 permit ospf any host 224.0.0.5
+access-list 100 deny ip any host 172.18.83.128
+access-list 100 permit ip any any
+access-list 101 permit ip 172.18.83.128 0.0.0.63 any
+access-list 101 permit icmp any any echo
+access-list 101 permit icmp any any echo-reply
+access-list 101 permit ip any host 255.255.255.255
+access-list 101 permit udp any host 172.18.83.129 eq tftp
+access-list 101 permit tcp any host 172.18.83.129 eq 2000
+access-list 101 permit ospf any host 224.0.0.5
+access-list 101 deny ip any host 172.18.80.132
+access-list 101 permit ip any any
+access-list 102 permit ip 172.18.82.128 0.0.0.127 any
+access-list 102 permit icmp any any echo
+access-list 102 permit icmp any any echo-reply
+access-list 102 permit ip any host 255.255.255.255
+access-list 102 permit udp any host 172.18.82.129 eq tftp
+access-list 102 permit tcp any host 172.18.82.129 eq 2000
+access-list 102 permit ospf any host 224.0.0.5
+access-list 102 deny ip any host 172.18.80.132
+access-list 102 permit ip any any
+access-list 103 permit ip 172.18.85.112 0.0.0.15 any
+access-list 103 permit icmp any any echo
+access-list 103 permit icmp any any echo-reply
+access-list 103 permit ip any host 255.255.255.255
+access-list 103 permit udp any host 172.18.80.132 eq tftp
+access-list 103 permit tcp any host 172.18.80.132 eq 2000
+access-list 103 permit ospf any host 224.0.0.5
+access-list 103 deny ip any host 172.18.80.132
+access-list 103 permit ip any any
+access-list 105 deny ip 172.18.84.224 0.0.0.31 any
+access-list 105 deny ip 172.18.83.128 0.0.0.63 any
+access-list 105 deny ip 172.18.82.128 0.0.0.127 any
+access-list 105 deny ip 172.18.85.112 0.0.0.15 any
+access-list 105 deny ip 172.18.85.96 0.0.0.15 any
+access-list 105 permit ip any host 255.255.255.255
+access-list 105 permit icmp any any echo
+access-list 105 permit icmp any any echo-reply
+access-list 105 permit udp any host 172.18.80.129 eq tftp
+access-list 105 permit tcp any host 172.18.80.129 eq 2000
+access-list 105 permit tcp any host 172.18.80.129 eq 1720
+access-list 105 permit ospf any host 224.0.0.5
+access-list 105 permit tcp any host 172.18.80.129 eq www
+access-list 105 permit tcp any host 172.18.80.129 eq 443
+access-list 105 permit udp any host 172.18.80.129 eq domain
+access-list 105 deny ip any host 172.18.80.129
+access-list 105 permit ip any any
+access-list 106 permit tcp any host 172.18.84.68 eq www
+access-list 106 permit tcp any host 172.18.84.68 eq 443
+access-list 106 permit udp any host 172.18.84.66 eq domain
+access-list 106 permit ip 172.18.84.64 0.0.0.63 any
+access-list 106 permit ip any host 255.255.255.255
+access-list 106 permit udp any host 172.18.84.65 eq tftp
+access-list 106 permit tcp any host 172.18.84.65 eq 2000
+access-list 106 permit ospf any host 224.0.0.5
+access-list 106 deny ip any host 172.18.80.129
+access-list 106 permit ip any any
+!
+!
+!
+!
+!
+!
+dial-peer voice 433 voip
+ destination-pattern 1...
+ session target ipv4:172.18.80.129
+!
+dial-peer voice 439 voip
+ destination-pattern 2...
+ session target ipv4:172.18.80.130
+!
+dial-peer voice 444 voip
+ destination-pattern 3...
+ session target ipv4:172.18.80.131
+!
+telephony-service
+ max-ephones 2
+ max-dn 2
+ ip source-address 172.18.85.113 port 2000
+ auto assign 1 to 2
+!
+ephone-dn 1
+ number 4001
+!
+ephone-dn 2
+ number 4000
+!
+ephone 1
+ device-security-mode none
+ mac-address 000A.4112.7261
+ type 7960
+ button 1:1
+!
+ephone 2
+ device-security-mode none
+ mac-address 0001.C7EB.C120
+ type 7960
+ button 1:2
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+

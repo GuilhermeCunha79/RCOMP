@@ -1,0 +1,117 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017I158-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 172.18.80.129 255.255.255.128
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/0
+ no ip address
+!
+interface FastEthernet1/0.430
+ encapsulation dot1Q 430
+ ip address 172.18.83.1 255.255.255.192
+!
+interface FastEthernet1/0.431
+ encapsulation dot1Q 431
+ ip address 172.18.82.1 255.255.255.128
+!
+interface FastEthernet1/0.432
+ encapsulation dot1Q 432
+ ip address 172.18.80.1 255.255.255.128
+!
+interface FastEthernet1/0.433
+ encapsulation dot1Q 433
+ ip address 172.18.81.129 255.255.255.128
+!
+interface FastEthernet1/0.444
+ encapsulation dot1Q 444
+ ip address 172.18.84.193 255.255.255.192
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 15.203.48.118 
+ip route 172.18.85.0 255.255.255.224 172.18.80.131 
+ip route 172.18.84.0 255.255.255.192 172.18.80.131 
+ip route 172.18.83.64 255.255.255.192 172.18.80.131 
+ip route 172.18.84.192 255.255.255.224 172.18.80.131 
+ip route 172.18.85.32 255.255.255.224 172.18.80.131 
+ip route 172.18.85.0 255.255.255.224 172.18.80.130 
+ip route 172.18.83.192 255.255.255.192 172.18.80.130 
+ip route 172.18.81.0 255.255.255.128 172.18.80.130 
+ip route 172.18.85.64 255.255.255.240 172.18.80.130 
+ip route 172.18.85.80 255.255.255.240 172.18.80.130 
+ip route 172.18.84.224 255.255.255.224 172.18.80.132 
+ip route 172.18.83.128 255.255.255.192 172.18.80.132 
+ip route 172.18.82.128 255.255.255.128 172.18.80.132 
+ip route 172.18.85.112 255.255.255.240 172.18.80.132 
+ip route 172.18.85.96 255.255.255.240 172.18.80.132 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
